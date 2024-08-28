@@ -1,6 +1,9 @@
+// ignore_for_file: unused_import
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../settings/settings_view.dart';
 import 'users_item.dart';
@@ -14,37 +17,9 @@ import 'users_item_details_view.dart';
 class UsersItemListView extends StatelessWidget {
   const UsersItemListView({
     super.key,
-    this.items = const [
-      UsersItem(
-          id: 0,
-          name: 'Tony Afriza',
-          username: 'tony',
-          password: '123',
-          access: 1),
-      UsersItem(
-          id: 1,
-          name: 'John Doe',
-          username: 'john',
-          password: '123',
-          access: 1),
-      UsersItem(
-          id: 2,
-          name: 'Jane Doe',
-          username: 'jane',
-          password: '123',
-          access: 1),
-      UsersItem(
-          id: 3,
-          name: 'Tony Stark',
-          username: 'stark',
-          password: '123',
-          access: 1),
-    ],
   });
 
   static const routeName = '/';
-
-  final List<UsersItem> items;
 
   @override
   Widget build(BuildContext context) {
@@ -60,25 +35,6 @@ class UsersItemListView extends StatelessWidget {
           ),
         ],
       ),
-      // body: ListView.builder(
-      //   restorationId: 'usersItemListView',
-      //   itemCount: items.length,
-      //   itemBuilder: (BuildContext context, int index) {
-      //     final item = items[index];
-      //     return ListTile(
-      //         title: Text('${item.name} Card'),
-      //         leading: const CircleAvatar(
-      //           foregroundImage: AssetImage('assets/images/flutter_logo.png'),
-      //         ),
-      //         onTap: () {
-      //           Navigator.pushNamed(
-      //             context,
-      //             UsersItemDetailsView.routeName(index),
-      //             arguments: {'item': item, 'id': item.id},
-      //           );
-      //         });
-      //   },
-      // ),
       body: FutureBuilder<String>(
           future: __getUser(),
           builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
@@ -102,32 +58,10 @@ class UsersItemListView extends StatelessWidget {
                                 AssetImage('assets/images/flutter_logo.png'),
                           ),
                           onTap: () {
-                            Navigator.pushNamed(
-                              context,
-                              UsersItemDetailsView.routeName(index),
-                              arguments: {'item': item, 'id': item.id},
-                            );
+                            context.goNamed('usersItem',
+                                pathParameters: {'id': '${item.id}'});
                           });
                     });
-
-                // return FutureBuilder(
-                //     future: __getUser(),
-                //     builder: (context, snapshot) {
-                //       if (snapshot.connectionState ==
-                //           ConnectionState.done) {
-                //         if (snapshot.hasError) {
-                //           return Text('Error: ${snapshot.error}');
-                //         } else {
-                //           final List<UsersItem> item =
-                //               (jsonDecode(snapshot.data!) as List<dynamic>)
-                //                   .map((dynamic e) => UsersItem.fromJson(e))
-                //                   .toList();
-                //           return Text('data: ${item}');
-                //         }
-                //       } else {
-                //         return const CircularProgressIndicator();
-                //       }
-                //     });
               }
             } else {
               return const CircularProgressIndicator();
